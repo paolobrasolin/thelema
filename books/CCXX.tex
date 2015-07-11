@@ -1,0 +1,116 @@
+\RequirePackage[l2tabu, orthodox]{nag}
+\documentclass[twoside,10pt]{memoir}
+
+\usepackage{tikz}
+%\usetikzlibrary{shapes.geometric}
+%\usetikzlibrary{decorations.text}
+
+% ========================================================== STOCK AND LAYOUT =
+\newlength{\bookheight}\setlength{\bookheight}{210mm}
+\newlength{\bookwidth} \setlength{\bookwidth} {0.618\bookheight}
+
+\setstocksize{\bookheight}{\bookwidth}
+\settrimmedsize{\bookheight}{\bookwidth}{*}
+
+\newlength{\hmar}
+  \setlength{\hmar}{\paperwidth}
+  \addtolength{\hmar}{-0.5\paperheight}
+
+\setlrmarginsandblock{0.618\hmar}{\hmar}{*}
+\setulmarginsandblock{\hmar}{1.618\hmar}{*}
+\setmarginnotes{0mm}{0mm}{0mm}
+
+\checkandfixthelayout
+
+% ===================================================================== COVER =
+\input{cover/cover}
+
+\renewcommand*{\covertitling}{
+  \fontsize{ 50pt}{0pt}\selectfont LIBER\\
+  \fontsize{110pt}{0pt}\selectfont AL\\
+  \fontsize{ 17pt}{0pt}\selectfont VEL\\
+  \fontsize{ 50pt}{0pt}\selectfont LEGIS\\
+  \fontsize{ 17pt}{0pt}\selectfont SUB FIGUR\^A\\
+  \fontsize{ 50pt}{0pt}\selectfont CCXX\\
+  \fontsize{ 17pt}{0pt}\selectfont AS DELIVERED BY\\
+  \fontsize{ 30pt}{0pt}\selectfont XCIII = 418\\
+  \fontsize{ 17pt}{0pt}\selectfont VNTO\\
+  \fontsize{ 40pt}{0pt}\selectfont DCLXVI%
+}
+
+% ======================================================= FONTS AND LANGUAGES =
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\setmainlanguage{english}
+\setmainfont[%
+  Mapping=tex-text,%
+  Ligatures={TeX, Historic},%
+  Numbers={Proportional,OldStyle}]%
+  {Linux Libertine O}
+\usepackage{microtype}
+
+% ================================================= NUMBERED PARAGRAPHS STYLE =
+\widowpenalties 1 10000
+\raggedbottom
+
+%\setlength\parindent{-2ex}
+\setlength\parskip{2ex}
+
+\newcounter{parcounter}
+
+\newenvironment{numberedparagraphs}{\setcounter{parcounter}{0}%
+   \par%
+   \everypar{%
+    \refstepcounter{parcounter}%
+    %\hangpara{2ex}{-2}
+\noindent
+\parshape=3
+-0.1\textwidth 1.1\textwidth
+0.05\textwidth 0.95\textwidth
+0ex \textwidth
+    \makebox[0.1\textwidth][l]{\LARGE\arabic{parcounter}}%
+   }%
+}{}
+
+% ============================================================= CHAPTER STYLE =
+\def\thechapter{{\MakeUppercase{\roman{chapter}}}}
+
+\makechapterstyle{chapter}{%
+\renewcommand*{\chapterheadstart}{}%{\vspace*{\beforechapskip}}
+\renewcommand*{\printchaptername}{}
+\renewcommand*{\chapternamenum}{}
+\renewcommand*{\printchapternum}{\raggedleft\chapnumfont\thechapter}
+\renewcommand*{\afterchapternum}{}
+\renewcommand*{\printchapternonum}{}
+%\renewcommand*{\printchaptertitle}[1]{\chaptitlefont #1}
+%\renewcommand*{\afterchaptertitle}{\par\nobreak\vskip \afterchapskip}
+\renewcommand*{\chaptitlefont}{\fontsize{100pt}{1em}\selectfont}
+\renewcommand*{\chapnumfont}{\chaptitlefont}
+}
+\chapterstyle{chapter}
+\aliaspagestyle{chapter}{empty}
+
+\newcommand*{\makechapter}[1]{
+  \chapter{}
+  \begin{numberedparagraphs}
+    \input{#1}
+  \end{numberedparagraphs}
+}
+
+% ================================================================ BODY STYLE =
+\makepagestyle{ruled}
+  \makeevenfoot{ruled}{\thechapter}{}{}
+  \makeoddfoot{ruled}{}{}{\thechapter}
+  \makefootrule{ruled}{\textwidth}{0.1pt}{\footruleskip}
+  \makeevenhead{ruled}{}{}{}
+  \makeoddhead{ruled}{}{}{}
+
+\pagestyle{ruled}
+
+% ================================================================== DOCUMENT =
+\begin{document}
+  \makecover
+  \makechapter{CCXX/chapter-1}
+  \makechapter{CCXX/chapter-2}
+  \makechapter{CCXX/chapter-3}
+\end{document}
