@@ -1,0 +1,165 @@
+\usepackage{tikz}
+
+%\usetikzlibrary{shapes.geometric}
+\usetikzlibrary{decorations.text}
+\usetikzlibrary{quotes}
+\usetikzlibrary{calc}
+\usetikzlibrary{math}
+\usetikzlibrary{intersections}
+
+\newcommand{\ngram}[7]{
+
+\begin{scope}
+
+\newcount\P % number of vertices
+\newcount\K 
+
+\newdimen\R
+\newdimen\r
+\newdimen\w
+\newdimen\dr
+
+\tikzmath{
+  \P = #1;            % number of vertices
+  \Q = #2;            % stellation step
+  \C = gcd(\P,\Q);    % number of components
+  \N = int(\P/\C);         % number of vertices per component
+  \K = min(\Q,\P-\Q); % apparent stellation step
+  \c = int(\C-1);     % reduced constants
+  \n = int(\N-1);     %   useful as
+  \k = int(\K-1);     %   sum indices
+  \p = int(\P-1);
+  %\n = int(\M-1);     % 
+  % Now for some commodities.
+  \R = #3;
+  \w = #4; \dr = \w/sin(90*(1/2-\K/\P)); \r = \R - \dr;
+  function VtoH(\v){
+    return int(Mod(Mod(\v*\Q/\C,\N)*\C+(\K<\Q?-1:1)*floor(\v/\N),\P));
+  };
+  \angle=360/\P;
+}
+
+
+
+\typeout{Computing vertices.}
+\foreach \v   [evaluate = {\h = VtoH(\v)}] in {0,...,\p}
+\foreach \rim                              in {-1,0,1} % W, middle, E
+{ \coordinate [ name  = \rim h\h
+              , alias = \rim v\v
+              , at    = (90-\h*\angle : \R-\dr/2+\rim*\dr/2) ];
+  %\fill [green] (\rim h\h) circle (1pt) node {\tiny\rim[v\v/h\h]};
+  \message{.}; }
+\typeout{Done.}
+
+\typeout{Computing sides.}
+\foreach \h   [evaluate = {\i = int(Mod(\h+\Q,\P))}] in {0,...,\p}
+\foreach \rim                                        in {-1,0,1} % W, m, E
+{ \path [name path global = \rim s\h] (\rim h\h)--(\rim h\i);
+  %\draw [blue] (\rim h\h) edge ["\tiny\rim s\h", ->] (\rim h\i);
+  \message{.}; }
+\typeout{Done.}
+
+\typeout{Computing intersections.}
+\foreach \v [evaluate = {\h = VtoH(\v)}] in {0,...,\p}
+\foreach \j [evaluate={
+    \x = 2*\j-(\k+1);
+    \y = (\x<0 ? \x : \x+1)*(\K<\Q?-1:1);
+    \i = int(Mod(\h+\y,\P));
+    \count = int(\v*\k+\j-1);
+  }] in {1,...,\k}
+\foreach \rimh in {-1,0,1} % w, m, e
+\foreach \rimi [evaluate={
+    \rimv=\rimh;
+    \rimw=int(\x<0?-\rimi:\rimi);
+    \name="\rimw \rimh i\count";
+  }] in {-1,0,1}
+{ % path instead of node: nodes intersections are buggy when rotated
+  \path [name intersections = { of = {\rimh s\h} and {\rimi s\i}
+                              , by = {\name} }];
+  %\fill [red] (\name) circle (1pt) node {\tiny\name};
+  \message{.}; }
+\typeout{Done.}
+
+\typeout{Weaving the ribbon.}
+\draw [#5]
+  \foreach \rim in {-1,1}
+    \foreach \cn in {0,...,\c}
+      \foreach \cv [evaluate={
+          \v = \cn*\N+\cv;
+          \prec = (\cn*\N+Mod(\cv-1,\N))*\k+\k-1;
+        }] in {0,...,\n}
+        { (1\rim i\prec)--(\rim v\v)
+          \foreach \j [evaluate={
+              \i   = \v*\k+\j-1;
+              \un  = "--(-1\rim i\i)";
+              \der =    "(1\rim i\i)";
+            }] in {1,...,\k} {\un\der\pgfextra{\message{.}}} };
+\typeout{Done.}
+
+\tikzset{inscribe/.style={draw=none,%
+  postaction={decorate,
+  decoration={text along path,text/.expanded={#6{0}{##1}},#7},
+  decoration/.expanded={#6{1}{##1}}
+  }}}
+
+\typeout{Inscribing the ribbon.}
+\draw% [red, ultra thick]
+    \foreach \cn in {0,...,\c}
+      \foreach \cv [evaluate={
+          \v = \cn*\N+\cv;
+          \w = \cn*\N+Mod(\cv+1,\N);
+          \lastins = int(\v*\K+\k);
+          \last = "edge[inscribe=\lastins](0v\w)";
+        }] in {0,...,\n}
+        { (0v\v)
+          \foreach \j [evaluate={
+              \i   = \v*\k+\j-1;
+              \ins = int(\v*\K+\j-1);
+              \under  = "edge[inscribe=\ins](-10i\i)(10i\i)";
+            }] in {1,...,\k} {\under\pgfextra{\message{.}}}
+          \last };
+\typeout{Done.}
+
+\end{scope}
+
+}
+
+
+
+
+
+
+
+  %function EulerTotient(\x){
+  %  \tot = 0;
+  %  for \i in {1,...,\x}{
+  %    if gcd(\x,\i) == 1 then {
+  %      \tot = \tot+1;
+  %    };
+  %  };
+  %  return \tot;
+  %};
+  %function ModularPower(\b,\e,\p){
+  %  \r = 1;
+  %  for \i in {1,...,\e}{
+  %    \r = Mod(\r*\b,\p);
+  %  };
+  %  return int(\r);
+  %};
+  %function ModularInverse(\b,\p){
+  %  return ModularPower(\b,EulerTotient(\p)-1,\p);
+  %};
+  %\Kinv = ModularInverse(\K,\P);
+  %function JumpBy(\h,\i){
+  %  %\co  = floor(\v/\N);
+  %  %\cv  = Mod(\v,\N);
+  %  %\coj = Mod(\i,\C);
+  %  %\cvj = floor(\i/\C);
+  %  %return \cvj;%Mod(\cv+ModularInverse(\K/\C,\N)*\cvj,\N);
+  %  return int(Mod(\h+\i,\P));
+  %};
+  %function WalkBy(\h,\i){
+  %  %\c = floor(\v/\N);
+  %  %return int(Mod(\v-\c*\N+\i,\N)+\c*\N);
+  %  return int(Mod(\h+\i*\Q,\P));
+  %};

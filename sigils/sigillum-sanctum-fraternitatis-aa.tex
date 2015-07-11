@@ -1,0 +1,38 @@
+\documentclass{standalone}
+
+\begin{document}
+
+\begin{tikzpicture}
+  \draw [black, solid, line width=0.8pt] (0,0)
+    circle (39.6pt) circle (38pt) circle (30.4pt) circle (28.8pt);
+  \node [%draw, red, dashed,
+    rotate=180, minimum size=48pt, regular polygon, regular polygon sides=7] at (0,0) (E) {};
+  \draw [black, solid, line width=2.8pt]
+    (E.corner 1) -- (E.corner 3) -- (E.corner 5) -- (E.corner 7) --
+    (E.corner 2) -- (E.corner 4) -- (E.corner 6) -- cycle;
+  \path [%draw, red, dashed,
+     postaction={decorate,decoration={raise=-0.5ex,text along path, text align=fit to path, text={|\fontsize{6pt}{0pt}\selectfont\sigil|SIGILLVM SANCTVM FRATERNITATIS A∴A∴}}}]
+    (64.286:34.2pt) arc (64.286:-244.286:34.2pt);
+  \node [draw, red,
+    rotate=180, minimum size=35pt, regular polygon, regular polygon sides=7] at (0,0) (F) {};
+  \draw [black, solid, line width=2.8pt]
+    (F.corner 1) -- (F.corner 3) -- (F.corner 5) -- (F.corner 7) --
+    (F.corner 2) -- (F.corner 4) -- (F.corner 6) -- cycle;
+  \path [draw, red, dashed,
+     postaction={decorate,decoration={raise=-0.5ex,text along path, text align=fit to path, text={|\fontsize{6pt}{0pt}\selectfont\sigil|BABALONB}}}]
+    (0,0) circle (16pt);
+  \node at (0,0) {
+    \begin{tikzpicture}
+      \draw [black, solid, line width=2.4pt]
+        (0,0) arc (128.571:231.429:8.4pt) arc (-51.429:51.429:8.4pt) arc (128.571:231.429:8.4pt);
+    \end{tikzpicture}};%traverso è 1.2pt
+  \node at (90:34.2pt) {
+    \begin{tikzpicture}
+      \draw [black, solid, line width=0.8pt] (0,0) circle (3.8pt);
+      \draw [black, solid, line width=0.8pt] ( 45:3.8pt) -- (225:3.8pt);
+      \draw [black, solid, line width=0.8pt] (135:3.8pt) -- (315:3.8pt);
+    \end{tikzpicture}
+  };
+\end{tikzpicture}
+
+\end{document}

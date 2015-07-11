@@ -1,0 +1,298 @@
+\documentclass{standalone}
+
+\usepackage{tikz}
+
+\input{ngram}
+
+\usetikzlibrary{decorations.text}
+\usetikzlibrary{calc}
+\usetikzlibrary{math}
+
+\usepackage{fontspec}
+
+\newfontfamily\rimfont{Goudy Mediaeval}
+\newfontfamily\inscriptionsfont{Goudy Mediaeval}
+\newfontfamily\hebrewfont{EzraSIL}%[Script=Hebrew] RTL is unnecessary
+\newfontfamily\greekfont{GalatiaSIL}
+\newfontfamily\zodiac{Symbola}
+\newfontfamily\planets{Symbola}
+\newfontfamily\elements{Symbola}
+
+\def\heb#1{\noexpand\hebrewfont\noexpand\hspace{7pt}#1\noexpand\hspace{7pt}}
+\def\grk#1{\noexpand\greekfont#1}
+
+\def\alef   {\heb א}
+\def\bet    {\heb ב}
+\def\gimel  {\heb ג}
+\def\dalet  {\heb ד}
+\def\he     {\heb ה}
+\def\vav    {\heb ו}
+\def\zayin  {\heb ז}
+\def\het    {\heb ח}
+\def\tet    {\heb ט}
+\def\yod    {\heb י}
+\def\kaf    {\heb כ} \def\kafAlt   {\heb ך}
+\def\lamed  {\heb ל}
+\def\mem    {\heb מ} \def\memAlt   {\heb ם}
+\def\nun    {\heb נ} \def\nunAlt   {\heb ן}
+\def\samekh {\heb ס}
+\def\ayin   {\heb ע}
+\def\pe     {\heb פ} \def\peAlt    {\heb ף}
+\def\tsadi  {\heb צ} \def\tsadiAlt {\heb ץ}
+\def\qof    {\heb ק}
+\def\resh   {\heb ר}
+\def\shin   {\heb ש}
+\def\tav    {\heb ת}
+
+\def\aithir{\grk{Αιθήρ}}
+
+\def\fs{\noexpand\fontsize{12pt}{12pt}\noexpand\selectfont\noexpand\inscriptionsfont}
+
+\def\blank#1#2{}
+
+\def\gap{\noexpand\hspace{1cm}}
+
+\def\either#1#2#3{\ifcase#1{#2}\or{#3}\fi}
+
+\def\alignfull{text align={fit to path stretching spaces, left indent=14pt, right indent=14pt}}
+\def\alignstart{text align={fit to path stretching spaces, left indent=14pt, right indent=7pt}}
+\def\alignend{text align={left, left indent=7pt}}
+\def\alignfit#1#2{text align={fit to path, left indent=#1pt, right indent=#2pt}}
+
+
+\def\myinscriptions#1#2{%
+\ifcase#2%
+   \either{#1}{|\fs|Daughter of Lords of Truth {\lamed}}       {\alignfull}
+\or\either{#1}{}{}
+\or\either{#1}{|\fs|and Reflux}                                {\alignend}
+\or\either{#1}{|\fs|{\qof} Ruler of Flux}                      {\alignstart}
+\or\either{#1}{|\fs|Lord of Fire of World {\resh}}             {\alignfull}
+\or\either{#1}{}{}
+\or\either{#1}{|\fs|Morning}                                   {\alignend}
+\or\either{#1}{|\fs|{\he} Sun of the}                          {\alignstart}
+\or\either{#1}{|\fs|Magus of the Eternal {\vav}}               {\alignfull}
+\or\either{#1}{}{}
+\or\either{#1}{|\fs|Mighty Waters}                             {\alignfit{1}{7}}
+\or\either{#1}{|\fs|{\mem} Spirit of the}                      {\alignstart}
+\or\either{#1}{|\fs|Child of Gt. Transformers {\nun}}          {\alignfull}
+\or\either{#1}{}{}
+\or\either{#1}{|\fs|Primal Fire}                               {\alignend}
+\or\either{#1}{|\fs|{\shin} Spirit of}                         {\alignstart}
+\or\either{#1}{|\fs|Gt. One of Night of Time {\tav}}           {\alignfull}
+\or\either{#1}{}{}
+\or\either{#1}{|\fs|the Voice}                                 {\alignend}
+\or\either{#1}{|\fs|{\zayin} Children of}                      {\alignstart}
+\or\either{#1}{|\fs|Child of Powers of Waters {\het}}          {\alignfull}
+\or\either{#1}{}{}
+\or\either{#1}{|\fs|Reconcilers}                               {\alignend}
+\or\either{#1}{|\fs|{\samekh} Daughter of}                     {\alignstart}
+\or\either{#1}{|\fs|Lord of Gates of Matter {\ayin}}           {\alignfull}
+\or\either{#1}{}{}
+\or\either{#1}{|\fs|of {\aithir}}                              {\alignend}
+\or\either{#1}{|\fs|{\alef} The Spirit}                        {\alignstart}
+\or\either{#1}{|\fs|The Magus of Power {\bet}}                 {\alignfull}
+\or\either{#1}{}{}
+\or\either{#1}{|\fs|Flaming Sword}                             {\alignfit{2}{7}}
+\or\either{#1}{|\fs|{\tet} Daughter of the}                    {\alignstart}
+\or\either{#1}{|\fs|Prophet of the Eternal {\yod}}             {\alignfull}
+\or\either{#1}{}{}
+\or\either{#1}{|\fs|of the Mighty}                             {\alignfit{2}{11}}
+\or\either{#1}{|\fs|{\pe} Lord of Hosts}                       {\alignstart}
+\or\either{#1}{|\fs|Daughter of Firmament {\tsadi}}            {\alignfull}
+\or\either{#1}{}{}
+\or\either{#1}{|\fs|Silver Star}                               {\alignend}
+\or\either{#1}{|\fs|{\dalet} Priestess of}                     {\alignstart}
+\or\either{#1}{|\fs|Daughter of Mighty Ones {\gimel}}          {\alignfull}
+\or\either{#1}{}{}
+\or\either{#1}{|\fs|of Life}                                   {\alignend}
+\or\either{#1}{|\fs|{\kaf} Lord of Forces}                     {\alignstart}
+\else\either{#1}{|\noexpand\bfseries|- #1 -}{}
+\fi
+}
+
+\begin{document}
+
+\begin{tikzpicture}
+
+% ================================================================= RIM SIZES =
+\newlength\rA \newlength\lwA
+\newlength\rC \newlength\lwC
+\newlength\rE \newlength\lwE
+\newlength\rF
+\newlength\rG \newlength\lwG
+\newlength\rI \newlength\lwI
+
+\tikzmath{
+  %     |--------------------------------------------------------------------->
+  \R  = 350pt;
+  %  d  ###   ###      ############                              ####  ####
+  \dA =  1                                                                  pt;
+  \dB =     1                                                               pt;
+  \dC =        1                                                            pt;
+  \dD =             2                                                       pt;
+  \dE =                      4                                              pt;
+  \dF =                                           37                        pt;
+  \dG =                                                          1.25       pt;
+  \dH =                                                              .5     pt;
+  \dI =                                                                1.25 pt;
+  % lw  |-|   |-|      |----------|                              |--|  |--|
+  \lwA = \dA; \lwC = \dC;    \lwE = \dE;                \lwG = \dG; \lwI = \dI;
+  %  r   |-->  |-->          |-->                 |-->             |-->  |-->
+  \rA = \R - \dA/2;                                                 
+  \rC = \R - \dA - \dB - \dC/2;                                     
+  \rE = \R - \dA - \dB - \dC - \dD - \dE/2;                         
+  \rF = \R - \dA - \dB - \dC - \dD - \dE - \dF/2;
+  \rG = \R - \dA - \dB - \dC - \dD - \dE - \dF - \dG/2;             
+  \rI = \R - \dA - \dB - \dC - \dD - \dE - \dF - \dG - \dH - \dI/2; 
+  %     |-------------------------- tot = 49pt ---------------------------|
+}
+
+% ======================================================================= RIM =
+\foreach \lw/\r in {\lwA/\rA, \lwC/\rC, \lwE/\rE, \lwG/\rG, \lwI/\rI}
+  \draw [line width=\lw] circle (\r);
+
+\def\rimfont{\fontsize{28pt}{0pt}\selectfont\bfseries\inscriptionsfont}
+
+\foreach
+  \l [count=\i, evaluate={\a = (3-\i)*360/11}]
+  in {N,U,I,T,H,H,A,D,I,T,H}
+  \node [rotate=\a] at (\a+90:\rF) {\rimfont\l};
+
+\begin{scope}
+
+\tikzset{dt/.pic={\fill circle (2pt);}}
+\tikzset{cr/.pic={\draw [line width=1.5pt]
+                        (-6pt,1pt)--++(12pt,0)
+                        (0,-8pt)--++(0,16pt);
+                  \draw [line width=1.5pt, fill=white]
+                        (0,1pt) circle (2pt);}}
+
+\foreach
+  \l [count=\i, evaluate={\a = (3+1/2-\i)*360/11}]
+  in {cr,dt,dt,dt,dt,cr,dt,dt,dt,dt,dt}
+  \pic [rotate=\a] at (\a+90:\rF) {\l};
+
+\end{scope}
+
+
+% ================================================================ NGRAMS SIZES
+\newlength\EndecaW \newlength\EndecaLW \newlength\EndecaR
+\newlength\HexaW   \newlength\HexaLW   \newlength\HexaR
+\newlength\PentaW  \newlength\PentaLW  \newlength\PentaR
+
+\tikzmath{
+  % ribbon widths and line widths
+  \EndecaW = 9pt; \EndecaLW = 2pt;
+  \HexaW   = 7pt; \HexaLW   = 2pt;
+  \PentaW  = 2pt; \PentaLW  = 1.5pt;
+  % radii with mitering compensation
+  \EndecaR = 301pt - 0.5*\EndecaLW / sin(180*(1/2-4/11)); % 301 = 350 - 49
+  \HexaR   =  98pt - 0.5*\HexaLW   / sin(180*(1/2-2/6 ));
+  \PentaR  =  28pt - 0.5*\PentaLW  / sin(180*(1/2-2/5 ));
+}
+
+% ================================================================= HENDECAGRAM
+\tikzset{hendecagram/.pic={
+  \ngram{11}{7}{\EndecaR}{\EndecaW}
+        {line width = \EndecaLW}
+        {\myinscriptions}{reverse path, raise=-0.3em}
+%        {\blank}{}
+}}
+
+\pic [rotate=180] {hendecagram};
+
+% ================================================================ INSCRIPTIONS
+\def\outfont{\fontsize{21pt}{0pt}\selectfont\bfseries\inscriptionsfont}
+\def\midfont{\fontsize{21pt}{0pt}\selectfont\hebrewfont}
+\def\innfont{\fontsize{21pt}{0pt}\selectfont\bfseries\inscriptionsfont}
+
+\newlength\rM
+\newlength\rN
+\newlength\rO
+
+\tikzmath{
+  \rM = 275pt;
+  \rN = 250pt;
+  \rO = 230pt;
+}
+
+\tikzset{write/.style={draw=none,postaction={decorate,
+  decoration={text along path,text align=center,text={#1}}}}}
+
+\foreach \i/\j/\name/\hbrw [evaluate={
+  \a = 90 + (1/2-\i)*360/11;
+  \b = \a - 360/11;
+}] in
+{0/0/Heru-pa-Kraath/ןיא%אין
+,1/10/Osiris/תוכלמ%מלכות
+,2/9/Shu/דוסי%יסוד
+,3/8/Thoth/דוה%הוד
+,4/7/Hathoor/חצנ%נצח
+,5/6/Ra/תראפת%תפארת
+,6/5/Horus/הרובג%גבורה
+,7/4/Amoun/דסח%חסד
+,8/3/Nephthys/הניב%בינה
+,9/2/Isis/המכח%חכמה
+,10/1/Ptah/רתכ%כתר
+}
+{ \path [write={|\outfont|\name}] (0,0)++(\a:\rM) arc (\a:\b:\rM);
+  \path [write={|\midfont|\hbrw}] (0,0)++(\a:\rN) arc (\a:\b:\rN);
+  \path [write={|\innfont|\i=\j}] (0,0)++(\a:\rO) arc (\a:\b:\rO); }
+
+% ================================================================= ABRACADABRA
+\def\abrfont{\fontsize{42pt}{0pt}\selectfont\hebrewfont}
+
+\foreach
+    \l [count=\i, evaluate={\a = (\i-1/2)*360/11}]
+    in {א,ב,ר,א,ה,א,ד,א,ב,ר,א}
+  \node [rotate=\a] at (\a+90:185pt) {\abrfont\l};
+
+% ====================================================================== ZODIAC
+\def\zodfont{\fontsize{7pt}{0pt}\selectfont\zodiac}
+
+\foreach
+    \l [count=\i, evaluate={\a = 60+30*\i}]
+    in {♈,♉,♊,♋,♌,♍,♎,♏,♐,♑,♒,♓}
+  \node [rotate=\a] at (\a+90:101.5pt) {\zodfont\l};
+
+% ==================================================================== HEXAGRAM
+\ngram{6}{4}{\HexaR}{\HexaW}
+      {line width=\HexaLW}{\blank}{}
+
+% ====================================================================== ARATAR
+\def\arafont{\fontsize{14pt}{0pt}\selectfont\hebrewfont}
+
+\foreach \l [count=\i] in {א,ר,א,ת,א,ר}
+  \node at (30+60*\i:79pt) {\arafont\l};
+
+% ===================================================================== PLANETS
+\def\plafont{\fontsize{10pt}{0pt}\selectfont\planets}
+
+\foreach \l [count=\i, evaluate={\rot=\i==3?90:0}] in {♃,♀,☾,☿,♂,♄}
+  \node [rotate=\rot] at (90-60*\i:55pt) {\plafont\l};
+
+% ==================================================================== ELEMENTS
+\def\elefont{\fontsize{7pt}{0pt}\selectfont\elements}
+
+\foreach \l [count=\i, evaluate={\rot=\i==5?45:0}] in {🜄,🜂,🜃,🜁,🜨}
+  \node [rotate=\rot] at (90-72*\i:30.5pt) {\elefont\l};
+
+% =================================================================== PENTAGRAM
+\ngram{5}{2}{\PentaR}{\PentaW}
+      {line width=\PentaLW}{\blank}{}
+
+% =================================================================== INNER RIM
+\tikzset{clip even odd rule/.code={\pgfseteorule}} % <3 to Andrew Stacey
+
+\begin{scope}
+\clip [clip even odd rule] circle (100pt)
+  (90:28pt) \foreach \i in {1,...,4} {-- (90+144*\i:28pt)};
+\draw [line width=1.5pt] circle (21pt);
+\end{scope}
+
+% ====================================================================== CENTER
+\def\cenfont{\fontsize{14pt}{0pt}\selectfont\hebrewfont}
+\node {\raisebox{-14pt}{\cenfont י}};
+
+\end{tikzpicture}
+\end{document}
