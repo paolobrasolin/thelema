@@ -32,7 +32,7 @@
   %\n = int(\M-1);     % 
   % Now for some commodities.
   \R = #3;
-  \w = #4; \dr = \w/sin(90*(1/2-\K/\P)); \r = \R - \dr;
+  \w = #4; \dr = \w/sin(180*(1/2-\K/\P)); \r = \R - \dr;
   function VtoH(\v){
     return int(Mod(Mod(\v*\Q/\C,\N)*\C+(\K<\Q?-1:1)*floor(\v/\N),\P));
   };

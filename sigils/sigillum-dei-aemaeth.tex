@@ -3,6 +3,9 @@
 \usepackage{etoolbox}
 
 \usepackage{tikz}
+
+\input{ngram}
+
 \usetikzlibrary{shapes.geometric}
 \usetikzlibrary{decorations.text}
 %\usetikzlibrary{knots}
@@ -10,10 +13,11 @@
 \usetikzlibrary{math}
 \usetikzlibrary{intersections}
 
+\def\blank#1#2{}
+
 \begin{document}
 \begin{tikzpicture}
   \newdimen\rA
-  \newdimen\dAB
   \newdimen\rB
   \newdimen\rC
   \newdimen\dE
@@ -21,24 +25,41 @@
   \newdimen\rE
   \newdimen\rF
   \newdimen\rG
+  \newdimen\rT
+  \newdimen\dZ
   \tikzmath{
-    \x = cos(180/7); % a=rx
-    \rA = 100pt;
-    \dAB = 9pt; % ???
-    \dE = 7pt;
-    \rB = \rA-\dAB;
-    \rC = \rB*\x;
-    \rD = (\rC*sin(180*(7-4)/(7*2))-\dE)/\x;
-    \rE = \rD - 8pt;
-    \rF = \rE - 7pt;
-    \rG = \rF * \x;
+    \x = cos(180/7); % apothem = radius * x
+    \r = 350pt;
+    \rA = \r*\x^0;
+    \rB = \r*\x^1;
+    \rC = \r*\x^2;
+    \rD = \r*\x^3;
+    \rT = \r*\x^8;
+    \y = sin(180*(1/2-2/7));
+    \z = cos(180*(1/2-2/7)+180/7);
+    \dE = \rD*(\x-\y*\z)-\x*\rT;
+    \rE = \rT/\x-\dE;
+    \rF = \rE-\dE;
+    \rG = \rF*\x;
+    \u = cos(180/5); % a=rx
+    \v = sin(180*(1/2-2/5));
+    \w = cos(180*(1/2-2/5)+180/5);
+    \dZ = \v*(\rG-\rG*\u);
   }
 
+%\draw [red, dashed, ultra thin]
+%  \foreach \i [evaluate={\c = \x^\i}] in {0,...,8} {circle (\rA*\c)};
 
-\draw circle (\rA)
-      circle (\rB);
-\foreach \i [evaluate={\a = \i*360/40}] in {1,...,40}
-  \draw (\a:\rA) -- (\a:\rB);
+
+
+\draw []
+  circle (\rA) circle (\rB)
+  \foreach \i [evaluate={\a = \i*360/40}] in {1,...,40}
+    {(\a:\rA) -- (\a:\rB)};
+
+
+
+
 
 \begin{scope}[regular polygon, regular polygon sides=7, line width=0pt]
   \node [minimum size=2*\rB] (eB) {};
@@ -55,16 +76,9 @@
   \foreach \j [evaluate={\f = \j/7}]             in {1,...,7}
     \draw ($(eB.corner \i)!\f!(eB.corner \s)$) -- ($(eC.corner \i)!\f!(eC.corner \s)$);
 
-%\nfoil{7}{\rC}{\dE}{*};
 
-
-%\nfoil[line join=round]{5}{\rG}{2.5pt}{*};
-
-
-%\node [name path=eC, draw, regular polygon, regular polygon sides=7, minimum size=2*\rC] at (0,0) {};
-%\path [draw, red, dashed,regular polygon, regular polygon sides=7, minimum size=2*\rB,
-%   postaction={decorate,decoration={raise=-0.5ex,text along path, text align=fit to path, text={|\fontsize{6pt}{0pt}\selectfont|SIGILLVM SANCTVM FRATERNITATIS A∴A∴}}}]
-%  (64.286:34.2pt) arc (64.286:-244.286:34.2pt);
+\ngram{7}{2}{\rC}{\dE}{line join=round, line width=1pt}{\blank}{}
+\ngram{5}{2}{\rG}{\dZ}{line join=round, line width=1pt}{\blank}{}
 
 
 \end{tikzpicture}
