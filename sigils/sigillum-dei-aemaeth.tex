@@ -12,13 +12,27 @@
 \usetikzlibrary{calc}
 \usetikzlibrary{math}
 \usetikzlibrary{intersections}
+\usetikzlibrary{shapes.multipart}
 
 \def\blank#1#2{}
+
+
+
+
+
+
+
+
+
+
+
 
 \begin{document}
 \begin{tikzpicture}
   \newdimen\rA
+  \newdimen\rAB
   \newdimen\rB
+  \newdimen\rBC
   \newdimen\rC
   \newdimen\dE
   \newdimen\rD
@@ -31,8 +45,8 @@
     \x = cos(180/7); % apothem = radius * x
     \r = 350pt;
     \rA = \r*\x^0;
-    \rB = \r*\x^1;
-    \rC = \r*\x^2;
+    \rB = \r*\x^1; \rAB = (\rA+\rB)/2;
+    \rC = \r*\x^2; \rBC = (\rB+\rC)/2;
     \rD = \r*\x^3;
     \rT = \r*\x^8;
     \y = sin(180*(1/2-2/7));
@@ -79,6 +93,57 @@
 
 \ngram{7}{2}{\rC}{\dE}{line join=round, line width=1pt}{\blank}{}
 \ngram{5}{2}{\rG}{\dZ}{line join=round, line width=1pt}{\blank}{}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\path [rectangle split, rectangle split ignore empty parts]
+  \foreach \x/\y [count=\i, evaluate={\a = (1/2-\i)*360/40}]
+    in {  4/T  ,  9/G  ,  7/n  ,  t/9  , 22/h 
+       ,  n/   ,  6/m  , 22/o  , 20/a  , 14/n
+       ,  6/a  ,  h/   , 18/o  , 26/l  ,  l/30
+       ,  n/   ,  l/8  ,  7/G  , 13/r  ,  H/12
+       , og/   ,  y/15 ,  t/11 ,  o/8  ,  e/21
+       , 10/b  , 11/A  , 15/I  ,  8/a  ,  r/16
+       ,  n/   ,  6/A  ,  o/10 ,  5/G  ,  h/14
+       ,  0/17 ,  5/   ,  a/5  ,  a/24 ,  6/$\omega$ }
+    {(90+\a:\rAB) node [rotate=\a] {\x\nodepart{second}\y}};
+
+\path []
+  \foreach \l [count=\i, evaluate={\a = (\i-1)*360/7}]
+    in {{Z,l,l,R,H,i,a},
+        {a,Z,C,a,a,c,b},
+        {p,a,u,p,n,h,r},
+        {h,d,m,h,i,a,i},
+        {k,k,a,a,e,e,e},
+        {i,i,e,e,l,l,l},
+        {e,e,l,l,M,G,?}}
+  \foreach \m [count=\j, evaluate={\f = (\j-1/2)/7}] in \l
+    {($(90-\a:\rBC)!\f!(90-\a-360/7:\rBC)$) node [rotate=-360/14-\a] {\m}};
+
+
+
+
+
+
+
+
+
+
 
 
 \end{tikzpicture}
